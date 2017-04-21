@@ -1,17 +1,10 @@
 const routes = require('express').Router();
-var workPackage = require('../models/workpackage');
+var WorkPackage = require('../models/workpackage');
 
 routes.get('/saveWorkPackage', (req, res) => {
-  var workPackage = new workPackage ({
-    name: 'Week1',
-    id: 'week_1'
+    console.log(req);
+    res.status(200).json({ message: 'WorkPackage created!' });
   });
-  week.save(function(err) {
-    if (err) throw err;
-    console.log('Week saved successfully');
-    res.status(200).json({ message: 'Week created!' });
-  });
-});
 routes.get('/getAllWorkPackages', (req ,res)=>{
    Week.find(function(err, workPackages) {
             if (err)

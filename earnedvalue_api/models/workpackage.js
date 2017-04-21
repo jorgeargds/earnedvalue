@@ -6,7 +6,7 @@ var Schema = mongoose.Schema;
 module.exports = mongoose.model('WorkPackage', new Schema({
     id: String,
     name: String,
-    idWeek: String,
+    idSprint: String,
     description: String,
     totalHours: String,
     hourCost: String,

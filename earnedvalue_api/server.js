@@ -3,10 +3,13 @@ const express = require('express');
 const app = express();
 const routes = require('./routes');
 var mongoose = require('mongoose');
+const bodyParser = require('body-parser');
 mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://root:root@52.41.138.64:27017/earnedvalue');
 
 //  Connect all our routes to our application
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use('/',function (req, res, next) {
 
     // Website you wish to allow to connect
