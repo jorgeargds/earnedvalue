@@ -8,12 +8,12 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var router_1 = require("@angular/router");
-var sales_component_1 = require("./sales.component");
-var inventory_component_1 = require("./inventory.component");
+var earnedvalue_component_1 = require("./earnedvalue.component");
+var riskMatrix_component_1 = require("./riskMatrix.component");
 var routes = [
     { path: '', redirectTo: '/earnedvalue', pathMatch: 'full' },
-    { path: 'earnedvalue', component: sales_component_1.SalesComponent },
-    { path: 'inventory', component: inventory_component_1.InventoryComponent }
+    { path: 'earnedvalue', component: earnedvalue_component_1.EarnedValueComponent },
+    { path: 'riskMatrix', component: riskMatrix_component_1.RiskMatrixComponent }
 ];
 var AppRoutingModule = (function () {
     function AppRoutingModule() {

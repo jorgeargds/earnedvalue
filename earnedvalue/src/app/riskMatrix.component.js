@@ -7,19 +7,16 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
-require("rxjs/add/operator/toPromise");
-require("rxjs/add/operator/map");
-var SalesComponent = (function () {
-    function SalesComponent() {
+var RiskMatrixComponent = (function () {
+    function RiskMatrixComponent() {
     }
-    return SalesComponent;
+    return RiskMatrixComponent;
 }());
-SalesComponent = __decorate([
+RiskMatrixComponent = __decorate([
     core_1.Component({
-        selector: 'sales',
-        templateUrl: 'app/view/earnedvalue.html'
+        selector: 'riskMatrix',
+        templateUrl: 'app/view/riskMatrix.html'
     })
-], SalesComponent);
-exports.SalesComponent = SalesComponent;
-;
-//# sourceMappingURL=sales.component.js.map
+], RiskMatrixComponent);
+exports.RiskMatrixComponent = RiskMatrixComponent;
+//# sourceMappingURL=riskMatrix.component.js.map

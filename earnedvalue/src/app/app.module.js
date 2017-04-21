@@ -12,8 +12,8 @@ var forms_1 = require("@angular/forms");
 var http_1 = require("@angular/http");
 var app_component_1 = require("./app.component");
 var app_routing_module_1 = require("./app-routing.module");
-var inventory_component_1 = require("./inventory.component");
-var sales_component_1 = require("./sales.component");
+var riskMatrix_component_1 = require("./riskMatrix.component");
+var earnedvalue_component_1 = require("./earnedvalue.component");
 var AppModule = (function () {
     function AppModule() {
     }
@@ -30,8 +30,8 @@ AppModule = __decorate([
         ],
         declarations: [
             app_component_1.AppComponent,
-            inventory_component_1.InventoryComponent,
-            sales_component_1.SalesComponent
+            riskMatrix_component_1.RiskMatrixComponent,
+            earnedvalue_component_1.EarnedValueComponent
         ],
         bootstrap: [app_component_1.AppComponent]
     })

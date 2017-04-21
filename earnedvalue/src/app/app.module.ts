@@ -6,8 +6,8 @@ import { HttpModule, JsonpModule }    from '@angular/http';
 import { AppComponent }     from './app.component';
 import { AppRoutingModule } from './app-routing.module'
 
-import { InventoryComponent} from './inventory.component'
-import { SalesComponent }    from './sales.component'
+import { RiskMatrixComponent} from './riskMatrix.component'
+import { EarnedValueComponent }    from './earnedvalue.component'
 
 
 @NgModule({
@@ -22,8 +22,8 @@ import { SalesComponent }    from './sales.component'
   declarations:
   [
     AppComponent,
-    InventoryComponent,
-    SalesComponent
+    RiskMatrixComponent,
+    EarnedValueComponent
    ],
   bootstrap:    [ AppComponent ]
 })

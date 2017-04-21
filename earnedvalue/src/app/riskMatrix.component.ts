@@ -4,10 +4,10 @@ import { Headers, Http, Response } from '@angular/http';
 
 
 @Component({
-  selector: 'inventory',
-  templateUrl: 'app/view/inventory.html'
+  selector: 'riskMatrix',
+  templateUrl: 'app/view/riskMatrix.html'
 })
-export class InventoryComponent {
+export class RiskMatrixComponent {
   // private baseUrl: string = 'http://localhost:8080';
   // products: any[];
   // constructor(private http: Http) {

@@ -1,13 +1,14 @@
 
 import { NgModule }             from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { SalesComponent }   from './sales.component';
-import { InventoryComponent } from './inventory.component'
+import { EarnedValueComponent }   from './earnedvalue.component';
+import { RiskMatrixComponent } from './riskMatrix.component'
 
 const routes: Routes = [
   { path: '', redirectTo: '/earnedvalue', pathMatch: 'full' },
-  { path: 'earnedvalue',  component: SalesComponent },
-  { path: 'inventory',  component: InventoryComponent }
+  { path: 'earnedvalue',  component: EarnedValueComponent },
+  { path: 'riskMatrix',  component: RiskMatrixComponent }
+
 ];
 @NgModule({
   imports: [ RouterModule.forRoot(routes) ],

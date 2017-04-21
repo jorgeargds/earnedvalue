@@ -7,30 +7,25 @@ import 'rxjs/add/operator/map';
 
 
 @Component({
-  selector: 'sales',
+  selector: 'earnedvalue',
   templateUrl: 'app/view/earnedvalue.html'
 
 })
 
 // @Injectable()
-export class SalesComponent {
+export class EarnedValueComponent {
+
 //   private baseUrl: string = 'http://localhost:8080';
 //   randomQuote = 'is this a randomQuote?';
 //   constructor(private http: Http) { }
 //
-//   saveProduct() {
-//     this.http.get(`${this.baseUrl}/saveProduct`, { headers: this.getHeaders() })
-//       .map(res => res.text())
-//       .subscribe(
-//       data => {
-//         this.randomQuote = data
-//         console.log(this.randomQuote)
-//       },
-//       err => this.logError(err),
-//
-//     );
-//
-//   }
+
+  saveProject(){
+
+  }
+  btnGetResponse(){
+    console.log('gg');
+  }
 //
 //   private getHeaders() {
 //     let headers = new Headers();
