@@ -8,13 +8,14 @@ import { Headers, Http, Response } from '@angular/http';
 })
 export class RiskMatrixComponent {
 
-  console.console.log("gg");
-  public riesgos: any[];
+
+   riesgos: any[];
 
   constructor(private http: Http) {
-    riesgos.push({"riesgo":"Riesgo #1","proabilidad":70,"impacto":5});
-    riesgos.push({"riesgo":"Riesgo #2","proabilidad":20,"impacto":3});
-    riesgos.push({"riesgo":"Riesgo #3","proabilidad":50,"impacto":1});
+    this.riesgos =[];
+    this.riesgos.push({"riesgo":"Riesgo #1","proabilidad":70,"impacto":5});
+    this.riesgos.push({"riesgo":"Riesgo #2","proabilidad":20,"impacto":3});
+    this.riesgos.push({"riesgo":"Riesgo #3","proabilidad":50,"impacto":1});
   };
 
   public btnGetResponse(){
