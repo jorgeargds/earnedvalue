@@ -1,8 +1,8 @@
-#Earned Value
+# Earned Value
 
 Aplicación que calcula el EV de un proyecto en un determinado momento y que también tiene la capacidad de manejar los riesgos del mismo mediante la matriz de riesgos.
 
-##Instalacion
+## Instalacion
 
 ```bash
 $ git clone https://github.com/jorgeargds/earnedvalue.git
@@ -14,7 +14,7 @@ $ npm build
 $ node server.js
 ```
 
-##Acerca de
+## Acerca de
 
 Desarrollado por:
 
@@ -22,7 +22,7 @@ Desarrollado por:
 	- Juan Carlos Sánchez 
 	- María Jesús Gutiérrez
 
-#Librerias 
+## Librerias 
 
 - https://bootswatch.com/flatly/#progress-bars
 - http://fontawesome.io/cheatsheet/
