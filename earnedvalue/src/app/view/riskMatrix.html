@@ -1,19 +1,47 @@
-<!-- <table class="table">
+
+<form class="form-inline" role="form">
+  <p>Agregar riesgo</p>
+  <fieldset>
+    <div class="row">
+      <div class="form-group">
+        <label for="inputEmail" class="sr-only">Email</label>
+        <div class="col-md-12">
+          <input type="text" class="form-control" id="inputEmail" placeholder="Riesgo">
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="inputEmail1" class="sr-only">Email</label>
+        <div class="input-group col-md-8">
+          <div class="input-group-addon">%</div>
+            <input type="text" class="form-control" id="inputEmail1" placeholder="Probabilidad">
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="inputEmail2" class="sr-only">Email</label>
+        <div class="input-group col-md-8">
+          <div class="input-group-addon"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i></div>
+          <input type="text" class="form-control" id="inputEmail2" placeholder="Impacto">
+        </div>
+      </div>
+      <button type="button" class="btn btn-primary" (click)="btnGetResponse()">Agregar</button>
+    </div>
+  </fieldset>
+</form>
+
+<table class="table">
   <thead>
     <tr>
-      <th>Nombre</th>
-      <th>Precio</th>
-      <th>Inventario</th>
-      <th>Total</th>
+      <th>Riesgo</th>
+      <th>Probabilidad (%)</th>
+      <th>Impacto</th>
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let product of products">
-      <td>{{product.name}}</td>
-      <td>&#8353;{{product.price}}</td>
-      <td>{{product.stock}}</td>
-      <td>{{product.stock * 1000}}</td>
+    <tr *ngFor="let riesgo of riesgos">
+      <td>{{riesgo.riesgo}}</td>
+      <td>{{riesgo.proabilidad}}</td>
+      <td>{{riesgo.impacto}}</td>
+
     </tr>
   </tbody>
-</table> -->
-<label>Invetory html</label>
+</table>
