@@ -13,13 +13,17 @@ export class RiskMatrixComponent {
 
   constructor(private http: Http) {
     this.riesgos =[];
-    this.riesgos.push({"riesgo":"Riesgo #1","proabilidad":70,"impacto":5});
-    this.riesgos.push({"riesgo":"Riesgo #2","proabilidad":20,"impacto":3});
-    this.riesgos.push({"riesgo":"Riesgo #3","proabilidad":50,"impacto":1});
+    this.riesgo = {};
+    this.descripcion = "";
+    this.probabilidad = 0;
+    this.impacto = 0;
+    this.riesgos.push({"descripcion":"Riesgo A","probabilidad":70,"impacto":2});
+    this.riesgos.push({"descripcion":"Riesgo B","probabilidad":20,"impacto":5});
+    this.riesgos.push({"descripcion":"Riesgo C","probabilidad":50,"impacto":3});
   };
 
-  public btnGetResponse(){
-    console.log('gg');
+  public btnGetResponse(riesgo){
+    this.riesgos.push({"riesgo":riesgo.descripcion,"probabilidad":riesgo.probabilidad,"impacto":riesgo.impacto});
   }
 
 };
