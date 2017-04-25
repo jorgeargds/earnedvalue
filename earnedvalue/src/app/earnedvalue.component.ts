@@ -16,7 +16,21 @@ import { Subject } from 'rxjs/Subject';
 
 @Component({
 	selector: 'earnedvalue',
-	templateUrl: 'app/view/earnedvalue.html'
+	templateUrl: 'app/view/earnedvalue.html',
+	styles: [`
+		.rangoVerde{
+			color: #008000;
+		}
+
+		.rangoAmarillo{
+			color: #FFFF00;
+		}
+
+		.rangoRojo{
+			color: #FF0000;
+		}
+
+	`]
 
 })
 
@@ -40,12 +54,13 @@ export class EarnedValueComponent {
 	PC : number;
 	AH : number;
 	PH : number;
+	isSprintSelected: boolean;
+
 	private baseUrl: string = 'http://localhost:8080';
 
 	//   randomQuote = 'is this a randomQuote?';
 	constructor(private http: Http, private route: ActivatedRoute,
 		private router: Router) {
-			this.isCreate = true;
 			this.sprints = [];
 			this.workPackage = new WorkPackage("","","","","","","","");
 			this.initEarnedValueAttrs();
@@ -58,6 +73,8 @@ export class EarnedValueComponent {
 				// Defaults to 0 if no query param provided.
 				this.title = ""
 				this.sprints = [];
+				this.isCreate = true;
+				this.isSprintSelected = true;
 				if(Object.keys(params).length !== 0){
 					this.http.post(`${this.baseUrl}/getProject`, params, { headers: this.getHeaders() })
 					.map(res => res.json())
@@ -206,6 +223,7 @@ export class EarnedValueComponent {
 				calculateEarnedValue(id: number){
 					var sps: Sprint[];
 					sps = [];
+					this.isSprintSelected = false;
 					var workPackages :any[];
 					workPackages = [];
 					for(var i = 0; i<this.sprints.length;i++){
@@ -234,6 +252,18 @@ export class EarnedValueComponent {
 							this.SPI = this.PH/this.AH;
 							this.CPI = this.PC/this.AC;
 
+				};
+				public isGreen(index: any): boolean{
+			    if(index == 1 ){
+			      return true;
+			    }
+			    return false;
+			  };
+				public isYellow(index: any): boolean{
+					if(index > 1 ){
+						return true;
+					}
+					return false;
 				};
 				ngOnDestroy() {
 					this.ngUnsubscribe.next();

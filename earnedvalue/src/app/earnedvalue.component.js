@@ -27,7 +27,6 @@ var EarnedValueComponent = (function () {
         this.router = router;
         this.ngUnsubscribe = new Subject_1.Subject();
         this.baseUrl = 'http://localhost:8080';
-        this.isCreate = true;
         this.sprints = [];
         this.workPackage = new workPackage_1.WorkPackage("", "", "", "", "", "", "", "");
         this.initEarnedValueAttrs();
@@ -41,6 +40,8 @@ var EarnedValueComponent = (function () {
             // Defaults to 0 if no query param provided.
             _this.title = "";
             _this.sprints = [];
+            _this.isCreate = true;
+            _this.isSprintSelected = true;
             if (Object.keys(params).length !== 0) {
                 _this.http.post(_this.baseUrl + "/getProject", params, { headers: _this.getHeaders() })
                     .map(function (res) { return res.json(); })
@@ -157,6 +158,7 @@ var EarnedValueComponent = (function () {
     EarnedValueComponent.prototype.calculateEarnedValue = function (id) {
         var sps;
         sps = [];
+        this.isSprintSelected = false;
         var workPackages;
         workPackages = [];
         for (var i = 0; i < this.sprints.length; i++) {
@@ -185,6 +187,20 @@ var EarnedValueComponent = (function () {
         this.CPI = this.PC / this.AC;
     };
     ;
+    EarnedValueComponent.prototype.isGreen = function (index) {
+        if (index == 1) {
+            return true;
+        }
+        return false;
+    };
+    ;
+    EarnedValueComponent.prototype.isYellow = function (index) {
+        if (index > 1) {
+            return true;
+        }
+        return false;
+    };
+    ;
     EarnedValueComponent.prototype.ngOnDestroy = function () {
         this.ngUnsubscribe.next();
         this.ngUnsubscribe.complete();
@@ -192,7 +208,8 @@ var EarnedValueComponent = (function () {
     EarnedValueComponent = __decorate([
         core_1.Component({
             selector: 'earnedvalue',
-            templateUrl: 'app/view/earnedvalue.html'
+            templateUrl: 'app/view/earnedvalue.html',
+            styles: ["\n\t\t.rangoVerde{\n\t\t\tcolor: #008000;\n\t\t}\n\n\t\t.rangoAmarillo{\n\t\t\tcolor: #FFFF00;\n\t\t}\n\n\t\t.rangoRojo{\n\t\t\tcolor: #FF0000;\n\t\t}\n\n\t"]
         }),
         core_2.Injectable(), 
         __metadata('design:paramtypes', [http_1.Http, router_1.ActivatedRoute, router_1.Router])
