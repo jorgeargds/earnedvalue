@@ -8,17 +8,18 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-Object.defineProperty(exports, "__esModule", { value: true });
-var core_1 = require("@angular/core");
-var core_2 = require("@angular/core");
-var http_1 = require("@angular/http");
-require("rxjs/add/operator/toPromise");
-require("rxjs/add/operator/map");
+var core_1 = require('@angular/core');
+var core_2 = require('@angular/core');
+var http_1 = require('@angular/http');
+require('rxjs/add/operator/toPromise');
+require('rxjs/add/operator/map');
 var EarnedValueComponent = (function () {
+    //   randomQuote = 'is this a randomQuote?';
     function EarnedValueComponent(http) {
         this.http = http;
         this.baseUrl = 'http://localhost:8080';
     }
+    //
     EarnedValueComponent.prototype.saveProject = function () {
         var _this = this;
         var body = { project: { id: 1, name: 'Project' }, description: 'EarnedValue' };
@@ -39,16 +40,16 @@ var EarnedValueComponent = (function () {
     EarnedValueComponent.prototype.btnGetResponse = function () {
         console.log('gg');
     };
+    EarnedValueComponent = __decorate([
+        core_1.Component({
+            selector: 'earnedvalue',
+            templateUrl: 'app/view/earnedvalue.html'
+        }),
+        core_2.Injectable(), 
+        __metadata('design:paramtypes', [http_1.Http])
+    ], EarnedValueComponent);
     return EarnedValueComponent;
 }());
-EarnedValueComponent = __decorate([
-    core_1.Component({
-        selector: 'earnedvalue',
-        templateUrl: 'app/view/earnedvalue.html'
-    }),
-    core_2.Injectable(),
-    __metadata("design:paramtypes", [http_1.Http])
-], EarnedValueComponent);
 exports.EarnedValueComponent = EarnedValueComponent;
 ;
 //# sourceMappingURL=earnedvalue.component.js.map
