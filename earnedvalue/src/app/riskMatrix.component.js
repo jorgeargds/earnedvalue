@@ -9,17 +9,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
-<<<<<<< HEAD
-var RiskMatrixComponent = (function () {
-    function RiskMatrixComponent() {
-    }
-    RiskMatrixComponent = __decorate([
-        core_1.Component({
-            selector: 'riskMatrix',
-            templateUrl: 'app/view/riskMatrix.html'
-        }), 
-        __metadata('design:paramtypes', [])
-=======
 var http_1 = require('@angular/http');
 var riskMatrix_1 = require('./interfaces/riskMatrix');
 var risk_1 = require('./interfaces/risk');
@@ -120,13 +109,9 @@ var RiskMatrixComponent = (function () {
             styles: ["\n    .rangoVerde{\n      color: #008000;\n    }\n\n    .rangoAmarillo{\n      color: #FFFF00;\n    }\n\n    .rangoRojo{\n      color: #FF0000;\n    }\n\n  "]
         }), 
         __metadata('design:paramtypes', [http_1.Http, router_1.ActivatedRoute, router_1.Router])
->>>>>>> 4dee12c8081be99bf3d5659e78a94eced1c83dd1
     ], RiskMatrixComponent);
     return RiskMatrixComponent;
 }());
 exports.RiskMatrixComponent = RiskMatrixComponent;
-<<<<<<< HEAD
-=======
 ;
->>>>>>> 4dee12c8081be99bf3d5659e78a94eced1c83dd1
 //# sourceMappingURL=riskMatrix.component.js.map

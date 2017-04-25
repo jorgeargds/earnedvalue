@@ -10,7 +10,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require('@angular/core');
 var router_1 = require('@angular/router');
-<<<<<<< HEAD
 var home_component_1 = require('./home.component');
 var earnedvalue_component_1 = require('./earnedvalue.component');
 var riskMatrix_component_1 = require('./riskMatrix.component');
@@ -19,14 +18,6 @@ var routes = [
     { path: 'home', component: home_component_1.HomeComponent },
     { path: 'earnedvalue', component: earnedvalue_component_1.EarnedValueComponent },
     { path: 'riskMatrix', component: riskMatrix_component_1.RiskMatrixComponent },
-=======
-var earnedvalue_component_1 = require('./earnedvalue.component');
-var riskMatrix_component_1 = require('./riskMatrix.component');
-var routes = [
-    { path: '', redirectTo: '/earnedvalue', pathMatch: 'full' },
-    { path: 'earnedvalue', component: earnedvalue_component_1.EarnedValueComponent },
-    { path: 'riskMatrix', component: riskMatrix_component_1.RiskMatrixComponent }
->>>>>>> 4dee12c8081be99bf3d5659e78a94eced1c83dd1
 ];
 var AppRoutingModule = (function () {
     function AppRoutingModule() {

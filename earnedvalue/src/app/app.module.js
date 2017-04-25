@@ -16,10 +16,7 @@ var app_component_1 = require('./app.component');
 var app_routing_module_1 = require('./app-routing.module');
 var riskMatrix_component_1 = require('./riskMatrix.component');
 var earnedvalue_component_1 = require('./earnedvalue.component');
-<<<<<<< HEAD
 var home_component_1 = require('./home.component');
-=======
->>>>>>> 4dee12c8081be99bf3d5659e78a94eced1c83dd1
 var AppModule = (function () {
     function AppModule() {
     }
@@ -35,12 +32,8 @@ var AppModule = (function () {
             declarations: [
                 app_component_1.AppComponent,
                 riskMatrix_component_1.RiskMatrixComponent,
-<<<<<<< HEAD
                 earnedvalue_component_1.EarnedValueComponent,
                 home_component_1.HomeComponent
-=======
-                earnedvalue_component_1.EarnedValueComponent
->>>>>>> 4dee12c8081be99bf3d5659e78a94eced1c83dd1
             ],
             bootstrap: [app_component_1.AppComponent]
         }), 
