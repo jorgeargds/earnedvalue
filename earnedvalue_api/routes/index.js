@@ -56,7 +56,7 @@ routes.post('/getProjectSprints', (req ,res)=>{
 
   var query = Sprint.find({});
   query.where('idProject', req.body.id)
-  query.sort('name');
+
   query.exec(function (err, sprints) {
     if (err)
         res.send(err);
@@ -88,9 +88,9 @@ routes.post('/saveWorkPackage', (req, res) => {
     res.status(200).json(workpackage);
   });
 }else{
-    console.log(req.body.id);
+
     WorkPackage.findOne({'id':req.body.id},function(err,workpackage){
-      console.log(workpackage);
+
       workpackage.name= req.body.name;
       workpackage.description= req.body.description;
       workpackage.hours= req.body.hours;

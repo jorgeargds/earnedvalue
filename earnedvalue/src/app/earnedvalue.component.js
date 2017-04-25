@@ -22,6 +22,7 @@ var EarnedValueComponent = (function () {
         this.route = route;
         this.router = router;
         this.baseUrl = 'http://localhost:8080';
+        this.isCreate = true;
         this.sprints = [];
         this.workPackage = new workPackage_1.WorkPackage("", "", "", "", "", "", "", "");
     }
@@ -43,6 +44,7 @@ var EarnedValueComponent = (function () {
                         .map(function (res) { return res.json(); })
                         .subscribe(function (data) {
                         _this.sprints = _this.getSprintWorkPackages(data);
+                        _this.isCreate = false;
                     }, function (err) { return _this.logError(err); });
                 }, function (err) { return _this.logError(err); });
             }
@@ -72,15 +74,9 @@ var EarnedValueComponent = (function () {
             .subscribe(function (data) { _this.sprints = data; }, function (err) { return _this.logError(err); });
     };
     EarnedValueComponent.prototype.setWorkPackage = function (sprint, workPackage) {
-        this.isCreate = false;
+        this.isCreatePackage = false;
         this.sprint = sprint;
         this.workPackage = workPackage;
-    };
-    EarnedValueComponent.prototype.executeWorkPackage = function () {
-        // if(this.workPackage.name != '')
-        //   this.editWorkPackage();
-        // else
-        //   this.saveWorkPackage();
     };
     EarnedValueComponent.prototype.saveWorkPackage = function () {
         var _this = this;
@@ -98,7 +94,6 @@ var EarnedValueComponent = (function () {
         this.http.post(this.baseUrl + "/saveWorkPackage", workPackage, { headers: this.getHeaders() })
             .map(function (res) { return res.json(); })
             .subscribe(function (data) {
-            console.log('guat');
             if (_this.sprint.workPackages == undefined)
                 _this.sprint.workPackages = [];
             if (_this.workPackage.id == undefined)
@@ -119,13 +114,10 @@ var EarnedValueComponent = (function () {
         console.error('There was an error: ' + err);
     };
     EarnedValueComponent.prototype.getSprint = function (sprint, action) {
-        this.isCreate = true;
+        this.workPackage = new workPackage_1.WorkPackage("", "", "", "", "", "", "", "");
+        this.isCreatePackage = true;
         this.sprint = sprint;
     };
-    // editWorkPackage(){
-    //   this.isCreate = false;
-    //   this.workPackage = new WorkPackage(workPackage.name,workPackage.description,workPackage.hours,workPackage.hourCost,workPackage.extraCost,"","","");
-    // }
     EarnedValueComponent.prototype.getSprintWorkPackages = function (data) {
         var _this = this;
         var sprints;
@@ -142,6 +134,9 @@ var EarnedValueComponent = (function () {
         return sprints;
     };
     ;
+    EarnedValueComponent.prototype.calculateEarnedValue = function () {
+        console.log('el calculo se hace aqui');
+    };
     EarnedValueComponent = __decorate([
         core_1.Component({
             selector: 'earnedvalue',

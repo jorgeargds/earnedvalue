@@ -18,7 +18,7 @@
             <p><b>Horas: {{workPackage.hours}}</b></p>
           </div>
           <div class= "col-md-2">
-            <p><b>Costo total: &#36; {{+workPackage.hourCost*+workPackage.hours + 1*+workPackage.extraCost}} </b></p>
+            <p><b>Costo total planeado: &#36; {{+workPackage.hourCost*+workPackage.hours + 1*+workPackage.extraCost}} </b></p>
           </div>
 
           <div class= "col-md-6">
@@ -31,9 +31,9 @@
   <button class="btn btn-success" style="margin:5px;" data-toggle="modal" data-target="#workPackageModal" (click)="getSprint(sprint, 'create' )">Agregar paquete de trabajo</button>
   <div style = "margin-bottom: 5px;"></div>
 </div>
-
-<button class="btn btn-info pull-right">Calcular Earned value</button>
-
+<div [hidden]="isCreate">
+<button class="btn btn-info pull-right" (click)="calculateEarnedValue()">Calcular Earned value</button>
+</div>
 <!-- PROJECT MODAL -->
 <div id ="myModal" class="modal">
   <div class="modal-dialog">
@@ -80,32 +80,32 @@
             <div class="form-group">
               <label  for="inputEmail" class="col-lg-2 control-label">Nombre</label>
               <div class="col-lg-10">
-                <input [disabled]="!isCreate" name ="workPackageName" type="text" class="form-control" id="inputEmail" placeholder="E.g Proyecto de EarneValue" [(ngModel)]="workPackage.name">
+                <input [disabled]="!isCreatePackage" name ="workPackageName" type="text" class="form-control" id="inputEmail" placeholder="Paquete 1" [(ngModel)]="workPackage.name">
               </div>
             </div>
             <div class="form-group">
               <label for="inputEmail" class="col-lg-2 control-label">Total de horas</label>
               <div class="col-lg-10">
-                <input [disabled]="!isCreate" name = "workPackageHours" type="text" class="form-control" id="inputEmail" placeholder="10" [(ngModel)]="workPackage.hours">
+                <input [disabled]="!isCreatePackage" name = "workPackageHours" type="text" class="form-control" id="inputEmail" placeholder="10" [(ngModel)]="workPackage.hours">
               </div>
             </div>
             <div class="form-group">
               <label for="inputEmail" class="col-lg-2 control-label">Costo por hora</label>
               <div class="col-lg-10">
-                <input [disabled]="!isCreate" name = "workPackageHourCost" type="text" class="form-control" id="inputEmail" placeholder="$10" [(ngModel)]="workPackage.hourCost">
+                <input [disabled]="!isCreatePackage" name = "workPackageHourCost" type="text" class="form-control" id="inputEmail" placeholder="$10" [(ngModel)]="workPackage.hourCost">
               </div>
             </div>
             <div class="form-group">
               <label for="inputEmail" class="col-lg-2 control-label">Costos extras</label>
               <div class="col-lg-10">
-                <input [disabled]="!isCreate" name = "workPackageExtraCost" type="text" class="form-control" id="inputEmail" placeholder="$500" [(ngModel)]="workPackage.extraCost">
+                <input [disabled]="!isCreatePackage" name = "workPackageExtraCost" type="text" class="form-control" id="inputEmail" placeholder="$500" [(ngModel)]="workPackage.extraCost">
               </div>
             </div>
 
             <div class="form-group">
               <label  for="textArea" class="col-lg-2 control-label">Descripción</label>
               <div class="col-lg-10">
-                <textarea name="workPackageDescription" [(ngModel)]="workPackage.description"[disabled]="!isCreate" name="workPackageDescription" class="form-control" rows="3" id="textArea" placeholder="El proyecto se basa en el manejor del valor ganado y el control de riesgos" [(ngModel)]="workPackage.description"></textarea>
+                <textarea name="workPackageDescription" [(ngModel)]="workPackage.description"[disabled]="!isCreatePackage" name="workPackageDescription" class="form-control" rows="3" id="textArea" placeholder="El proyecto se basa en el manejor del valor ganado y el control de riesgos" [(ngModel)]="workPackage.description"></textarea>
               </div>
             </div>
 
@@ -113,19 +113,19 @@
             <div class="form-group">
               <label ngModelfor="inputEmail" class="col-lg-2 control-label">Horas actuales</label>
               <div class="col-lg-10">
-                <input  name="workPackageActualHours" [(ngModel)]="workPackage.actualHours" [disabled]="isCreate" type="text" class="form-control" id="inputEmail" placeholder="10">
+                <input  name="workPackageActualHours" [(ngModel)]="workPackage.actualHours" [disabled]="isCreatePackage" type="text" class="form-control" id="inputEmail" placeholder="10">
               </div>
             </div>
             <div class="form-group">
               <label for="inputEmail" class="col-lg-2 control-label">Costo por hora actual</label>
               <div class="col-lg-10">
-                <input name="workPackageActualHourCost" [(ngModel)]="workPackage.actualHourCost" [disabled]="isCreate" type="text" class="form-control" id="inputEmail" placeholder="$10">
+                <input name="workPackageActualHourCost" [(ngModel)]="workPackage.actualHourCost" [disabled]="isCreatePackage" type="text" class="form-control" id="inputEmail" placeholder="$10">
               </div>
             </div>
             <div class="form-group">
               <label  for="inputEmail" class="col-lg-2 control-label">Costo extra actual</label>
               <div class="col-lg-10">
-                <input name="workPackageActualExtraCost" [(ngModel)]="workPackage.actualextraCost" [disabled]="isCreate" type="text" class="form-control" id="inputEmail" placeholder="$500">
+                <input name="workPackageActualExtraCost" [(ngModel)]="workPackage.actualExtraCost" [disabled]="isCreatePackage" type="text" class="form-control" id="inputEmail" placeholder="$500">
               </div>
             </div>
 
@@ -134,6 +134,10 @@
 
       </div>
       <div class="modal-footer">
+        <div class="alert alert-dismissible alert-warning">
+          <h4>Advertencia!</h4>
+          <p>Una vez ingresada la información no se puede modificar.</p>
+        </div>
         <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
         <button type="button" class="btn btn-primary"  data-dismiss="modal" (click)="saveWorkPackage()">Guardar</button>
       </div>
