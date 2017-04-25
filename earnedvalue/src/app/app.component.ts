@@ -17,6 +17,11 @@ export class AppComponent {
     this.getProjects();
   }
 
+  saveProjectId(id:string){
+    console.log(id);
+    localStorage.setItem('idProject',id);
+  }
+
   getProjects(){
     this.http.get(`${this.baseUrl}/getAllProjects`, { headers: this.getHeaders() })
     .map(res => res.json())

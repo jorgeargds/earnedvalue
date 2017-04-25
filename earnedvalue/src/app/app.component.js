@@ -18,6 +18,10 @@ var AppComponent = (function () {
         this.projects = [];
         this.getProjects();
     }
+    AppComponent.prototype.saveProjectId = function (id) {
+        console.log(id);
+        localStorage.setItem('idProject', id);
+    };
     AppComponent.prototype.getProjects = function () {
         var _this = this;
         this.http.get(this.baseUrl + "/getAllProjects", { headers: this.getHeaders() })

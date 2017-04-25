@@ -64,7 +64,7 @@ export class EarnedValueComponent {
 					.subscribe(
 						data => {
 							this.title = data.name;
-
+							localStorage.setItem('idProject',data.id);
 							this.http.post(`${this.baseUrl}/getProjectSprints`, data, { headers: this.getHeaders() })
 							.map(res => res.json())
 							.subscribe(

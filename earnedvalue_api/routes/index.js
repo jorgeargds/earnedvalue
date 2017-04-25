@@ -3,6 +3,7 @@ var Sprint = require('../models/sprint');
 var WorkPackage = require('../models/workpackage');
 var Project = require('../models/project');
 var RiskMatrix = require('../models/RiskMatrix');
+var Risk = require('../models/risk');
 //Project API
 
 routes.post('/saveProject', (req, res) => {
@@ -24,7 +25,7 @@ routes.post('/saveProject', (req, res) => {
   })
   matrix.save(function(err) {
     if (err) throw err;
-    res.status(200).json(matrix);
+      console.log('RiskMatrixCreated');
   });
 });
 
@@ -140,7 +141,7 @@ routes.post('/getSprintWorkPackages', (req ,res)=>{
 
 //RiskMatrix API
 routes.post('/getProjectMatrix', (req ,res)=>{
-
+  console.log(req.body)
   var query = RiskMatrix.find({});
   query.where('idProject', req.body.idProject)
   query.exec(function (err, riskMatrix) {
@@ -151,7 +152,7 @@ routes.post('/getProjectMatrix', (req ,res)=>{
 });
 
 routes.post('/getMatrixRisks', (req ,res)=>{
-
+  console.log(req.body);
   var query = Risk.find({});
   query.where('idMatrix', req.body.idMatrix)
   query.exec(function (err, risks) {
@@ -162,7 +163,7 @@ routes.post('/getMatrixRisks', (req ,res)=>{
 });
 
 routes.post('/saveRisk', (req, res) => {
-
+  console.log(req.body)
   var risk = new Risk ({
     descripcion: req.body.descripcion,
     probabilidad: req.body.probabilidad,

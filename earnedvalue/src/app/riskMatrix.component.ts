@@ -53,52 +53,62 @@ export class RiskMatrixComponent {
   };
 
   ngOnInit() {
-    this.route
-    .queryParams
-    .subscribe(params => {
+
       // Defaults to 0 if no query param provided.
-      this.riesgos = [];
-      if(Object.keys(params).length !== 0){
-        this.http.post(`${this.baseUrl}/getProjectMatrix`, params, { headers: this.getHeaders() })
+        this.riesgos = [];
+        console.log(localStorage.getItem('idProject'));
+        this.http.post(`${this.baseUrl}/getProjectMatrix`,{idProject:localStorage.getItem('idProject')} , { headers: this.getHeaders() })
         .map(res => res.json())
         .subscribe(
           data => {
-            this.matrix = new RiskMatrix(data.id,data.idProject);
 
-            this.http.post(`${this.baseUrl}/getMatrixRisks`, data, { headers: this.getHeaders() })
+            console.log(data[0].id);
+
+            this.matrix = new RiskMatrix(data[0].id,data[0].idProject);
+
+            this.http.post(`${this.baseUrl}/getMatrixRisks`, {idMatrix:this.matrix.id}, { headers: this.getHeaders() })
             .map(res => res.json())
             .subscribe(
               data => {
-                this.getMatrixRisks(data);
-
+                this.riesgos = data;
               },
               err => this.logError(err),
             );
           },
           err => this.logError(err),
         );
-      }
-    });
   };
 
-  public getMatrixRisks(data : Risk[]){
-
-    data.forEach(riesgo => {
-      console.log(riesgo);
-    });
-
-  };
+  // public getMatrixRisks(data : Risk[]){
+  //
+  //   data.forEach(riesgo => {
+  //     console.log(riesgo);
+  //   });
+  //
+  // };
 
   public agregarRiesgo(){
     this.riesgoTemp.valor = (((+this.riesgoTemp.probabilidad / 100 ) * +this.riesgoTemp.impacto)).toString();
     let riesgo = new Risk(this.riesgoTemp.descripcion,Number(this.riesgoTemp.probabilidad),Number(this.riesgoTemp.impacto), Number(this.riesgoTemp.valor));
-    this.riesgos.push(riesgo);
+    riesgo.idMatrix = this.matrix.id;
+    console.log(this.matrix.id)
+
     this.riesgoTemp = {
       descripcion : "",
       probabilidad : "",
       impacto : "",
       valor: ""
     };
+    this.http.post(`${this.baseUrl}/saveRisk`, riesgo, { headers: this.getHeaders() })
+    .map(res => res.json())
+    .subscribe(
+      data => {
+        this.riesgos.push(data);
+      },
+      err => this.logError(err),
+    );
+
+
   };
 
   public enRangoVerde(index: number): boolean{

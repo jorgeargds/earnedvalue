@@ -46,6 +46,7 @@ var EarnedValueComponent = (function () {
                     .map(function (res) { return res.json(); })
                     .subscribe(function (data) {
                     _this.title = data.name;
+                    localStorage.setItem('idProject', data.id);
                     _this.http.post(_this.baseUrl + "/getProjectSprints", data, { headers: _this.getHeaders() })
                         .map(function (res) { return res.json(); })
                         .subscribe(function (data) {
