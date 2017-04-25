@@ -2,10 +2,9 @@
 
 # compiled output
 /tmp
+/node_modules
 
 # dependencies
-earnedvalue_api/node_modules
-earnedvalue/node_modules
 /bower_components
 
 # IDEs and editors

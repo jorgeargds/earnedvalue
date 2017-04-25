@@ -2,8 +2,12 @@ const routes = require('express').Router();
 var Sprint = require('../models/sprint');
 var WorkPackage = require('../models/workpackage');
 var Project = require('../models/project');
+<<<<<<< HEAD
 var RiskMatrix = require('../models/riskMatrix');
+=======
+>>>>>>> b6a11f8e65f8a28e5cdf381fde74b8649e6d8e04
 var Risk = require('../models/risk');
+var RiskMatrix = require('../models/riskMatrix');
 //Project API
 
 routes.post('/saveProject', (req, res) => {

@@ -33,9 +33,11 @@ export class RiskMatrixComponent {
     impacto : string,
     valor: string
   };
-  rangoVerde: number = 1.6;
-  rangoAmarillo: number = 3.3;
+  rangoVerde: number = 1.66;
   rangoRojo: number = 3.34;
+  rangoAmarilloMin: number;
+  rangoAmarilloMax: number;
+  nombre: string;
   matrix: RiskMatrix;
 
   private baseUrl: string = 'http://localhost:8080';
@@ -49,21 +51,22 @@ export class RiskMatrixComponent {
       impacto : "",
       valor: ""
     };
-
+    this.rangoAmarilloMin = this.rangoVerde + 0.01;
+    this.rangoAmarilloMax = this.rangoRojo - 0.01;
+    this.nombre = "";
   };
 
   ngOnInit() {
 
       // Defaults to 0 if no query param provided.
         this.riesgos = [];
-        console.log(localStorage.getItem('idProject'));
+
         this.http.post(`${this.baseUrl}/getProjectMatrix`,{idProject:localStorage.getItem('idProject')} , { headers: this.getHeaders() })
         .map(res => res.json())
         .subscribe(
           data => {
 
-            console.log(data[0].id);
-
+            this.nombre = data[0].id.substring(0,data[0].id.length-7);
             this.matrix = new RiskMatrix(data[0].id,data[0].idProject);
 
             this.http.post(`${this.baseUrl}/getMatrixRisks`, {idMatrix:this.matrix.id}, { headers: this.getHeaders() })
@@ -79,19 +82,10 @@ export class RiskMatrixComponent {
         );
   };
 
-  // public getMatrixRisks(data : Risk[]){
-  //
-  //   data.forEach(riesgo => {
-  //     console.log(riesgo);
-  //   });
-  //
-  // };
-
   public agregarRiesgo(){
     this.riesgoTemp.valor = (((+this.riesgoTemp.probabilidad / 100 ) * +this.riesgoTemp.impacto)).toString();
     let riesgo = new Risk(this.riesgoTemp.descripcion,Number(this.riesgoTemp.probabilidad),Number(this.riesgoTemp.impacto), Number(this.riesgoTemp.valor));
     riesgo.idMatrix = this.matrix.id;
-    console.log(this.matrix.id)
 
     this.riesgoTemp = {
       descripcion : "",
@@ -119,14 +113,14 @@ export class RiskMatrixComponent {
   };
 
   public enRangoAmarillo(index: number): boolean{
-    if(+this.riesgos[index].valor <= this.rangoAmarillo && +this.riesgos[index].valor > this.rangoVerde){
+    if(+this.riesgos[index].valor < this.rangoRojo && +this.riesgos[index].valor > this.rangoVerde){
       return true;
     }
     return false;
   };
 
   public enRangoRojo(index: number): boolean{
-    if(+this.riesgos[index].valor <= this.rangoRojo && ++this.riesgos[index].valor > this.rangoAmarillo){
+    if(+this.riesgos[index].valor >= this.rangoRojo){
       return true;
     }
     return false;
@@ -141,4 +135,18 @@ export class RiskMatrixComponent {
   logError(err: String) {
     console.error('There was an error: ' + err);
 	};
+
+  onChangeVerde(event: any){
+    this.rangoVerde = event;
+    this.rangoAmarilloMin = +this.rangoVerde + 0.01;
+
+  }
+
+  onChangeRojo(event: any){
+    this.rangoRojo = event;
+    this.rangoAmarilloMax = +this.rangoRojo + 0.01;
+
+  }
+
+
 };
