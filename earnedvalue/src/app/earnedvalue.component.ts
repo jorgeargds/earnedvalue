@@ -102,7 +102,9 @@ export class EarnedValueComponent {
         err => this.logError(err),
       );
     }
-    setWorkPackage(workPackage: WorkPackage){
+    setWorkPackage(sprint:Sprint,workPackage: WorkPackage){
+      this.isCreate = false;
+      this.sprint = sprint;
       this.workPackage = workPackage;
     }
 
@@ -116,22 +118,28 @@ export class EarnedValueComponent {
 
     }
     saveWorkPackage (){
+
       var workPackage = {
+        id: this.workPackage.id,
         idSprint:this.sprint.id,
         name:this.workPackage.name,
         description:this.workPackage.description,
         hours:this.workPackage.hours,
         hourCost:this.workPackage.hourCost,
-        extraCost:this.workPackage.extraCost};
-
-
+        extraCost:this.workPackage.extraCost,
+        actualHours:this.workPackage.actualHours,
+        actualHourCost:this.workPackage.actualHourCost,
+        actualExtraCost:this.workPackage.actualExtraCost};
         this.http.post(`${this.baseUrl}/saveWorkPackage`,workPackage , { headers: this.getHeaders() })
         .map(res => res.json())
         .subscribe(
           data => {
+            console.log('guat');
             if(this.sprint.workPackages == undefined)
             this.sprint.workPackages = [];
-            this.sprint.workPackages.push(data);
+            if(this.workPackage.id == undefined)
+              this.sprint.workPackages.push(data);
+
             this.workPackage = new WorkPackage("","","","","","","","");
           },
           err => this.logError(err),
@@ -154,13 +162,9 @@ export class EarnedValueComponent {
 
       }
       getSprint(sprint: Sprint, action :String){
-        if(action === 'create')
+
           this.isCreate = true;
-        else
-          this.isCreate = false;
-
-        this.sprint = sprint;
-
+          this.sprint = sprint;
       }
 
       // editWorkPackage(){

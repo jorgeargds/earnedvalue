@@ -67,8 +67,10 @@ routes.post('/getProjectSprints', (req ,res)=>{
 
 //WorkPackage API
 routes.post('/saveWorkPackage', (req, res) => {
-  console.log(req.body.idSprint);
-  var workpackage = new WorkPackage ({
+  //Metodo que salva y edita el WorkPackage
+
+ if(req.body.id == undefined){
+    var workpackage = new WorkPackage ({
     id: req.body.idSprint.substring(0,req.body.idSprint.length-3)+'_'+req.body.name+"_ID",
     idSprint: req.body.idSprint,
     name: req.body.name,
@@ -79,12 +81,28 @@ routes.post('/saveWorkPackage', (req, res) => {
     actualHours:"",
     actualHourCost: "",
     actualExtraCost: ""
-  });
+  })
   workpackage.save(function(err) {
     if (err) throw err;
     console.log('WorkPackage saved successfully');
     res.status(200).json(workpackage);
   });
+}else{
+    console.log(req.body.id);
+    WorkPackage.findOne({'id':req.body.id},function(err,workpackage){
+      console.log(workpackage);
+      workpackage.name= req.body.name;
+      workpackage.description= req.body.description;
+      workpackage.hours= req.body.hours;
+      workpackage.hourCost= req.body.hourCost;
+      workpackage.extraCost= req.body.extraCost;
+      workpackage.actualHours=req.body.actualHours;
+      workpackage.actualHourCost= req.body.actualHourCost;
+      workpackage.actualExtraCost= req.body.actualExtraCost;
+      workpackage.save();
+      res.status(200).json(workpackage);
+    });
+  }
 });
 
 routes.get('/getAllWorkPackages', (req ,res)=>{
@@ -96,7 +114,7 @@ routes.get('/getAllWorkPackages', (req ,res)=>{
 });
 
 routes.post('/getSprintWorkPackages', (req ,res)=>{
-  console.log(req)
+
   var query = WorkPackage.find({});
   query.where('idSprint', req.body.id)
   query.sort('name');

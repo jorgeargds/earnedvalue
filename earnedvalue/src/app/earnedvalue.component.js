@@ -71,7 +71,9 @@ var EarnedValueComponent = (function () {
             .map(function (res) { return res.json(); })
             .subscribe(function (data) { _this.sprints = data; }, function (err) { return _this.logError(err); });
     };
-    EarnedValueComponent.prototype.setWorkPackage = function (workPackage) {
+    EarnedValueComponent.prototype.setWorkPackage = function (sprint, workPackage) {
+        this.isCreate = false;
+        this.sprint = sprint;
         this.workPackage = workPackage;
     };
     EarnedValueComponent.prototype.executeWorkPackage = function () {
@@ -83,18 +85,24 @@ var EarnedValueComponent = (function () {
     EarnedValueComponent.prototype.saveWorkPackage = function () {
         var _this = this;
         var workPackage = {
+            id: this.workPackage.id,
             idSprint: this.sprint.id,
             name: this.workPackage.name,
             description: this.workPackage.description,
             hours: this.workPackage.hours,
             hourCost: this.workPackage.hourCost,
-            extraCost: this.workPackage.extraCost };
+            extraCost: this.workPackage.extraCost,
+            actualHours: this.workPackage.actualHours,
+            actualHourCost: this.workPackage.actualHourCost,
+            actualExtraCost: this.workPackage.actualExtraCost };
         this.http.post(this.baseUrl + "/saveWorkPackage", workPackage, { headers: this.getHeaders() })
             .map(function (res) { return res.json(); })
             .subscribe(function (data) {
+            console.log('guat');
             if (_this.sprint.workPackages == undefined)
                 _this.sprint.workPackages = [];
-            _this.sprint.workPackages.push(data);
+            if (_this.workPackage.id == undefined)
+                _this.sprint.workPackages.push(data);
             _this.workPackage = new workPackage_1.WorkPackage("", "", "", "", "", "", "", "");
         }, function (err) { return _this.logError(err); });
     };
@@ -111,10 +119,7 @@ var EarnedValueComponent = (function () {
         console.error('There was an error: ' + err);
     };
     EarnedValueComponent.prototype.getSprint = function (sprint, action) {
-        if (action === 'create')
-            this.isCreate = true;
-        else
-            this.isCreate = false;
+        this.isCreate = true;
         this.sprint = sprint;
     };
     // editWorkPackage(){

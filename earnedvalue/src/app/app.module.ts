@@ -7,7 +7,7 @@ import { AppRoutingModule }           from './app-routing.module'
 import { RiskMatrixComponent}         from './riskMatrix.component'
 import { EarnedValueComponent }       from './earnedvalue.component'
 import { HomeComponent }              from './home.component'
-import {NgbModule}                    from '@ng-bootstrap/ng-bootstrap';
+
 
 
 @NgModule({
@@ -17,8 +17,7 @@ import {NgbModule}                    from '@ng-bootstrap/ng-bootstrap';
     FormsModule,
     HttpModule,
     JsonpModule,
-    AppRoutingModule,
-    NgbModule.forRoot()
+    AppRoutingModule
 
   ],
   declarations:
