@@ -42,6 +42,7 @@ for (var sprint of req.body) {
   var sprint = new Sprint ({
     name: sprint.name,
     idProject: sprint.idProject,
+    position: sprint.position,
     id:(sprint.idProject).substring(0,sprint.idProject.length-3) + '_' + (sprint.id) +"_ID"
   });
   sprints.push(sprint);
@@ -54,12 +55,12 @@ res.status(200).json(sprints);
 
 routes.post('/getProjectSprints', (req ,res)=>{
 
-  var query = Sprint.find({});
-  query.where('idProject', req.body.id)
-
+  var query = Sprint.find();
+  query.where('idProject', req.body.id);
   query.exec(function (err, sprints) {
     if (err)
         res.send(err);
+
     res.json(sprints);
 });
 
@@ -90,7 +91,7 @@ routes.post('/saveWorkPackage', (req, res) => {
 }else{
 
     WorkPackage.findOne({'id':req.body.id},function(err,workpackage){
-
+      console.log(req.body);
       workpackage.name= req.body.name;
       workpackage.description= req.body.description;
       workpackage.hours= req.body.hours;

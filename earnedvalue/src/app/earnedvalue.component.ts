@@ -7,9 +7,11 @@ import { Sprint} from './interfaces/sprint'
 import { WorkPackage} from './interfaces/workPackage'
 import 'rxjs/add/operator/toPromise';
 import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/share';
 import { ActivatedRoute, Router } from '@angular/router';
-
-
+import * as _ from 'underscore';
+import 'rxjs/add/operator/takeUntil';
+import { Subject } from 'rxjs/Subject';
 
 
 @Component({
@@ -20,6 +22,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 @Injectable()
 export class EarnedValueComponent {
+	private ngUnsubscribe: Subject<void> = new Subject<void>();
 	title : "";
 	projectName : "";
 	cantSprints : "";
@@ -29,7 +32,14 @@ export class EarnedValueComponent {
 	workPackage : WorkPackage;
 	isCreatePackage : boolean;
 	isCreate : boolean;
-
+	AC: number;
+	CV: number;
+	SV: number;
+	SPI: number;
+	CPI: number;
+	PC : number;
+	AH : number;
+	PH : number;
 	private baseUrl: string = 'http://localhost:8080';
 
 	//   randomQuote = 'is this a randomQuote?';
@@ -38,6 +48,7 @@ export class EarnedValueComponent {
 			this.isCreate = true;
 			this.sprints = [];
 			this.workPackage = new WorkPackage("","","","","","","","");
+			this.initEarnedValueAttrs();
 		}
 		//
 		ngOnInit() {
@@ -69,6 +80,16 @@ export class EarnedValueComponent {
 					);
 				}
 			});
+		}
+		private initEarnedValueAttrs(){
+			this.AC= 0;
+			this.CV= 0;
+			this.SV= 0;
+			this.SPI= 0;
+			this.CPI= 0;
+			this.PC = 0;
+			this.AH = 0;
+			this.PH = 0;
 		}
 
 		saveProject(){
@@ -110,74 +131,113 @@ export class EarnedValueComponent {
 			this.workPackage = workPackage;
 		}
 
-		saveWorkPackage (){
+			//Se hace separado ya que al ser un observable cold se suscribe dos veces
+			saveWorkPackage (){
 
-			var workPackage = {
-				id: this.workPackage.id,
-				idSprint:this.sprint.id,
-				name:this.workPackage.name,
-				description:this.workPackage.description,
-				hours:this.workPackage.hours,
-				hourCost:this.workPackage.hourCost,
-				extraCost:this.workPackage.extraCost,
-				actualHours:this.workPackage.actualHours,
-				actualHourCost:this.workPackage.actualHourCost,
-				actualExtraCost:this.workPackage.actualExtraCost};
-				this.http.post(`${this.baseUrl}/saveWorkPackage`,workPackage , { headers: this.getHeaders() })
-				.map(res => res.json())
-				.subscribe(
-					data => {
-						if(this.sprint.workPackages == undefined)
-							this.sprint.workPackages = [];
-						if(this.workPackage.id == undefined)
-							this.sprint.workPackages.push(data);
+				var workPackage = {
+					id: this.workPackage.id,
+					idSprint:this.sprint.id,
+					name:this.workPackage.name,
+					description:this.workPackage.description,
+					hours:this.workPackage.hours,
+					hourCost:this.workPackage.hourCost,
+					extraCost:this.workPackage.extraCost,
+					actualHours:this.workPackage.actualHours,
+					actualHourCost:this.workPackage.actualHourCost,
+					actualExtraCost:this.workPackage.actualExtraCost};
 
-						this.workPackage = new WorkPackage("","","","","","","","");
-					},
-					err => this.logError(err),
-				);
-			}
-
-			private cleanProjectAttributes (){
-				this.projectName = "";
-				this.cantSprints = "";
-			}
-
-			private getHeaders() {
-				let headers = new Headers();
-				headers.append('Accept', 'application/json');
-
-				return headers;
-			}
-			logError(err: String) {
-				console.error('There was an error: ' + err);
-
-			}
-			getSprint(sprint: Sprint, action :String){
-				this.workPackage = new WorkPackage("","","","","","","","");
-				this.isCreatePackage = true;
-				this.sprint = sprint;
-			}
-
-			getSprintWorkPackages(data : Sprint[]){
-				var sprints : Sprint[];
-				sprints = [];
-				data.forEach(sprint => {
-					this.http.post(`${this.baseUrl}/getSprintWorkPackages`, sprint, { headers: this.getHeaders() })
+					this.http.post(`${this.baseUrl}/saveWorkPackage`,workPackage , { headers: this.getHeaders() })
 					.map(res => res.json())
+					.takeUntil(this.ngUnsubscribe)
 					.subscribe(
 						data => {
-							sprint.workPackages = [];
-							sprint.workPackages = data;
-							sprints.push(sprint);
+							console.log(data);
+							if(this.sprint.workPackages == undefined)
+							this.sprint.workPackages = [];
+							if(this.workPackage.id == undefined)
+							this.sprint.workPackages.push(data);
 
+							this.workPackage = new WorkPackage("","","","","","","","");
 						},
 						err => this.logError(err),
 					);
-				});
-				return sprints;
+				}
+
+
+				private cleanProjectAttributes (){
+					this.projectName = "";
+					this.cantSprints = "";
+				}
+
+				private getHeaders() {
+					let headers = new Headers();
+					headers.append('Accept', 'application/json');
+
+					return headers;
+				}
+				logError(err: String) {
+					console.error('There was an error: ' + err);
+
+				}
+				getSprint(sprint: Sprint, action :String){
+					this.workPackage = new WorkPackage("","","","","","","","");
+					this.isCreatePackage = true;
+					this.sprint = sprint;
+				}
+
+				getSprintWorkPackages(data : Sprint[]){
+					var sprints : Sprint[];
+					sprints = [];
+					data.forEach(sprint => {
+						this.http.post(`${this.baseUrl}/getSprintWorkPackages`, sprint, { headers: this.getHeaders() })
+						.map(res => res.json())
+						.subscribe(
+							data => {
+								sprint.workPackages = [];
+								sprint.workPackages = data;
+								sprints.push(sprint);
+
+							},
+							err => this.logError(err),
+						);
+					});
+					return sprints;
+				};
+				calculateEarnedValue(id: number){
+					var sps: Sprint[];
+					sps = [];
+					var workPackages :any[];
+					workPackages = [];
+					for(var i = 0; i<this.sprints.length;i++){
+						var spId =this.sprints[i].id;
+						sps.push(_.find(this.sprints,function(sprint){ return sprint.id == spId }));
+						if(this.sprints[i].id===id){ break; }
+					}
+
+					this.getValues(sps);
+				}
+
+				getValues(sprint:Sprint[]){
+					this.initEarnedValueAttrs();
+					sprint.forEach(sprint =>{
+						sprint.workPackages.forEach(wp=>{
+
+							this.AC +=  +wp.actualHours* +wp.actualHourCost + +wp.actualExtraCost;
+							this.PC +=  +wp.hours* +wp.hourCost + +wp.extraCost;
+
+							this.PH +=  +wp.hours;
+							this. AH+=  +wp.actualHours;
+						});
+					});
+							this.SV = this.PH -this.AH;
+							this.CV = this.PC -this.AC;
+							this.SPI = this.PH/this.AH;
+							this.CPI = this.PC/this.AC;
+
+				};
+				ngOnDestroy() {
+					this.ngUnsubscribe.next();
+					this.ngUnsubscribe.complete();
+				}
+
 			};
-			calculateEarnedValue(){
-				console.log('el calculo se hace aqui');
-			}
-		};
