@@ -1,13 +1,16 @@
 
 import { NgModule }             from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { HomeComponent } from './home.component'
 import { EarnedValueComponent }   from './earnedvalue.component';
 import { RiskMatrixComponent } from './riskMatrix.component'
 
 const routes: Routes = [
-  { path: '', redirectTo: '/earnedvalue', pathMatch: 'full' },
+  { path: '', redirectTo: '/home', pathMatch: 'full' },
+  { path: 'home',  component: HomeComponent },
   { path: 'earnedvalue',  component: EarnedValueComponent },
-  { path: 'riskMatrix',  component: RiskMatrixComponent }
+  { path: 'riskMatrix',  component: RiskMatrixComponent },
+
 
 ];
 @NgModule({

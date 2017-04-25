@@ -33,9 +33,11 @@ export class RiskMatrixComponent {
     impacto : string,
     valor: string
   };
-  rangoVerde: number = 1.6;
-  rangoAmarillo: number = 3.3;
+  rangoVerde: number = 1.66;
   rangoRojo: number = 3.34;
+  rangoAmarilloMin: number;
+  rangoAmarilloMax: number;
+  nombre: string;
   matrix: RiskMatrix;
 
   private baseUrl: string = 'http://localhost:8080';
@@ -49,56 +51,58 @@ export class RiskMatrixComponent {
       impacto : "",
       valor: ""
     };
-
+    this.rangoAmarilloMin = this.rangoVerde + 0.01;
+    this.rangoAmarilloMax = this.rangoRojo - 0.01;
+    this.nombre = "";
   };
 
   ngOnInit() {
-    this.route
-    .queryParams
-    .subscribe(params => {
+
       // Defaults to 0 if no query param provided.
-      this.riesgos = [];
-      if(Object.keys(params).length !== 0){
-        this.http.post(`${this.baseUrl}/getProjectMatrix`, params, { headers: this.getHeaders() })
+        this.riesgos = [];
+
+        this.http.post(`${this.baseUrl}/getProjectMatrix`,{idProject:localStorage.getItem('idProject')} , { headers: this.getHeaders() })
         .map(res => res.json())
         .subscribe(
           data => {
-            this.matrix = new RiskMatrix(data.id,data.idProject);
 
-            this.http.post(`${this.baseUrl}/getMatrixRisks`, data, { headers: this.getHeaders() })
+            this.nombre = data[0].id.substring(0,data[0].id.length-7);
+            this.matrix = new RiskMatrix(data[0].id,data[0].idProject);
+
+            this.http.post(`${this.baseUrl}/getMatrixRisks`, {idMatrix:this.matrix.id}, { headers: this.getHeaders() })
             .map(res => res.json())
             .subscribe(
               data => {
-                this.getMatrixRisks(data);
-
+                this.riesgos = data;
               },
               err => this.logError(err),
             );
           },
           err => this.logError(err),
         );
-      }
-    });
-  };
-
-  public getMatrixRisks(data : Risk[]){
-
-    data.forEach(riesgo => {
-      console.log(riesgo);
-    });
-
   };
 
   public agregarRiesgo(){
     this.riesgoTemp.valor = (((+this.riesgoTemp.probabilidad / 100 ) * +this.riesgoTemp.impacto)).toString();
     let riesgo = new Risk(this.riesgoTemp.descripcion,Number(this.riesgoTemp.probabilidad),Number(this.riesgoTemp.impacto), Number(this.riesgoTemp.valor));
-    this.riesgos.push(riesgo);
+    riesgo.idMatrix = this.matrix.id;
+
     this.riesgoTemp = {
       descripcion : "",
       probabilidad : "",
       impacto : "",
       valor: ""
     };
+    this.http.post(`${this.baseUrl}/saveRisk`, riesgo, { headers: this.getHeaders() })
+    .map(res => res.json())
+    .subscribe(
+      data => {
+        this.riesgos.push(data);
+      },
+      err => this.logError(err),
+    );
+
+
   };
 
   public enRangoVerde(index: number): boolean{
@@ -109,14 +113,14 @@ export class RiskMatrixComponent {
   };
 
   public enRangoAmarillo(index: number): boolean{
-    if(+this.riesgos[index].valor <= this.rangoAmarillo && +this.riesgos[index].valor > this.rangoVerde){
+    if(+this.riesgos[index].valor < this.rangoRojo && +this.riesgos[index].valor > this.rangoVerde){
       return true;
     }
     return false;
   };
 
   public enRangoRojo(index: number): boolean{
-    if(+this.riesgos[index].valor <= this.rangoRojo && ++this.riesgos[index].valor > this.rangoAmarillo){
+    if(+this.riesgos[index].valor >= this.rangoRojo){
       return true;
     }
     return false;
@@ -132,9 +136,17 @@ export class RiskMatrixComponent {
     console.error('There was an error: ' + err);
 	};
 
-  public setearColores(){
-    let temp = this.riesgos;
-    this.riesgos = [];
-    this.riesgos = temp;
+  onChangeVerde(event: any){
+    this.rangoVerde = event;
+    this.rangoAmarilloMin = +this.rangoVerde + 0.01;
+
   }
+
+  onChangeRojo(event: any){
+    this.rangoRojo = event;
+    this.rangoAmarilloMax = +this.rangoRojo + 0.01;
+
+  }
+
+
 };

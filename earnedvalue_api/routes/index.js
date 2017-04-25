@@ -2,7 +2,8 @@ const routes = require('express').Router();
 var Sprint = require('../models/sprint');
 var WorkPackage = require('../models/workpackage');
 var Project = require('../models/project');
-
+var Risk = require('../models/risk');
+var RiskMatrix = require('../models/riskMatrix');
 //Project API
 
 routes.post('/saveProject', (req, res) => {
@@ -15,6 +16,7 @@ routes.post('/saveProject', (req, res) => {
   project.save(function(err) {
     if (err) throw err;
     res.status(200).json(project);
+
   });
 
   var matrix = new RiskMatrix({
@@ -23,9 +25,10 @@ routes.post('/saveProject', (req, res) => {
   })
   matrix.save(function(err) {
     if (err) throw err;
-    res.status(200).json(matrix);
+      console.log('RiskMatrixCreated');
   });
 });
+
 
 routes.get('/getAllProjects', (req ,res)=>{
    Project.find(function(err, projects) {
@@ -70,8 +73,9 @@ routes.post('/getProjectSprints', (req ,res)=>{
   query.exec(function (err, sprints) {
     if (err)
         res.send(err);
+
     res.json(sprints);
-});
+  });
 
 });
 
@@ -100,7 +104,6 @@ routes.post('/saveWorkPackage', (req, res) => {
 }else{
 
     WorkPackage.findOne({'id':req.body.id},function(err,workpackage){
-
       workpackage.name= req.body.name;
       workpackage.description= req.body.description;
       workpackage.hours= req.body.hours;
@@ -132,12 +135,13 @@ routes.post('/getSprintWorkPackages', (req ,res)=>{
     if (err)
         res.send(err);
     res.json(workPackages);
+
   });
 });
 
 //RiskMatrix API
 routes.post('/getProjectMatrix', (req ,res)=>{
-
+  console.log(req.body)
   var query = RiskMatrix.find({});
   query.where('idProject', req.body.idProject)
   query.exec(function (err, riskMatrix) {
@@ -148,7 +152,7 @@ routes.post('/getProjectMatrix', (req ,res)=>{
 });
 
 routes.post('/getMatrixRisks', (req ,res)=>{
-
+  console.log(req.body);
   var query = Risk.find({});
   query.where('idMatrix', req.body.idMatrix)
   query.exec(function (err, risks) {
@@ -159,7 +163,7 @@ routes.post('/getMatrixRisks', (req ,res)=>{
 });
 
 routes.post('/saveRisk', (req, res) => {
-
+  console.log(req.body)
   var risk = new Risk ({
     descripcion: req.body.descripcion,
     probabilidad: req.body.probabilidad,
@@ -171,9 +175,8 @@ routes.post('/saveRisk', (req, res) => {
     if (err) throw err;
     console.log('WorkPackage saved successfully');
     res.status(200).json(risk);
+
   });
 });
-
-
 
 module.exports = routes;

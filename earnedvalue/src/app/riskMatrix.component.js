@@ -18,8 +18,7 @@ var RiskMatrixComponent = (function () {
         this.http = http;
         this.route = route;
         this.router = router;
-        this.rangoVerde = 1.6;
-        this.rangoAmarillo = 3.3;
+        this.rangoVerde = 1.66;
         this.rangoRojo = 3.34;
         this.baseUrl = 'http://localhost:8080';
         this.riesgos = [];
@@ -29,46 +28,44 @@ var RiskMatrixComponent = (function () {
             impacto: "",
             valor: ""
         };
+        this.rangoAmarilloMin = this.rangoVerde + 0.01;
+        this.rangoAmarilloMax = this.rangoRojo - 0.01;
+        this.nombre = "";
     }
     ;
     RiskMatrixComponent.prototype.ngOnInit = function () {
         var _this = this;
-        this.route
-            .queryParams
-            .subscribe(function (params) {
-            // Defaults to 0 if no query param provided.
-            _this.riesgos = [];
-            if (Object.keys(params).length !== 0) {
-                _this.http.post(_this.baseUrl + "/getProjectMatrix", params, { headers: _this.getHeaders() })
-                    .map(function (res) { return res.json(); })
-                    .subscribe(function (data) {
-                    _this.matrix = new riskMatrix_1.RiskMatrix(data.id, data.idProject);
-                    _this.http.post(_this.baseUrl + "/getMatrixRisks", data, { headers: _this.getHeaders() })
-                        .map(function (res) { return res.json(); })
-                        .subscribe(function (data) {
-                        _this.getMatrixRisks(data);
-                    }, function (err) { return _this.logError(err); });
-                }, function (err) { return _this.logError(err); });
-            }
-        });
-    };
-    ;
-    RiskMatrixComponent.prototype.getMatrixRisks = function (data) {
-        data.forEach(function (riesgo) {
-            console.log(riesgo);
-        });
+        // Defaults to 0 if no query param provided.
+        this.riesgos = [];
+        this.http.post(this.baseUrl + "/getProjectMatrix", { idProject: localStorage.getItem('idProject') }, { headers: this.getHeaders() })
+            .map(function (res) { return res.json(); })
+            .subscribe(function (data) {
+            _this.nombre = data[0].id.substring(0, data[0].id.length - 7);
+            _this.matrix = new riskMatrix_1.RiskMatrix(data[0].id, data[0].idProject);
+            _this.http.post(_this.baseUrl + "/getMatrixRisks", { idMatrix: _this.matrix.id }, { headers: _this.getHeaders() })
+                .map(function (res) { return res.json(); })
+                .subscribe(function (data) {
+                _this.riesgos = data;
+            }, function (err) { return _this.logError(err); });
+        }, function (err) { return _this.logError(err); });
     };
     ;
     RiskMatrixComponent.prototype.agregarRiesgo = function () {
+        var _this = this;
         this.riesgoTemp.valor = (((+this.riesgoTemp.probabilidad / 100) * +this.riesgoTemp.impacto)).toString();
         var riesgo = new risk_1.Risk(this.riesgoTemp.descripcion, Number(this.riesgoTemp.probabilidad), Number(this.riesgoTemp.impacto), Number(this.riesgoTemp.valor));
-        this.riesgos.push(riesgo);
+        riesgo.idMatrix = this.matrix.id;
         this.riesgoTemp = {
             descripcion: "",
             probabilidad: "",
             impacto: "",
             valor: ""
         };
+        this.http.post(this.baseUrl + "/saveRisk", riesgo, { headers: this.getHeaders() })
+            .map(function (res) { return res.json(); })
+            .subscribe(function (data) {
+            _this.riesgos.push(data);
+        }, function (err) { return _this.logError(err); });
     };
     ;
     RiskMatrixComponent.prototype.enRangoVerde = function (index) {
@@ -79,14 +76,14 @@ var RiskMatrixComponent = (function () {
     };
     ;
     RiskMatrixComponent.prototype.enRangoAmarillo = function (index) {
-        if (+this.riesgos[index].valor <= this.rangoAmarillo && +this.riesgos[index].valor > this.rangoVerde) {
+        if (+this.riesgos[index].valor < this.rangoRojo && +this.riesgos[index].valor > this.rangoVerde) {
             return true;
         }
         return false;
     };
     ;
     RiskMatrixComponent.prototype.enRangoRojo = function (index) {
-        if (+this.riesgos[index].valor <= this.rangoRojo && ++this.riesgos[index].valor > this.rangoAmarillo) {
+        if (+this.riesgos[index].valor >= this.rangoRojo) {
             return true;
         }
         return false;
@@ -102,10 +99,13 @@ var RiskMatrixComponent = (function () {
         console.error('There was an error: ' + err);
     };
     ;
-    RiskMatrixComponent.prototype.setearColores = function () {
-        var temp = this.riesgos;
-        this.riesgos = [];
-        this.riesgos = temp;
+    RiskMatrixComponent.prototype.onChangeVerde = function (event) {
+        this.rangoVerde = event;
+        this.rangoAmarilloMin = +this.rangoVerde + 0.01;
+    };
+    RiskMatrixComponent.prototype.onChangeRojo = function (event) {
+        this.rangoRojo = event;
+        this.rangoAmarilloMax = +this.rangoRojo + 0.01;
     };
     RiskMatrixComponent = __decorate([
         core_1.Component({

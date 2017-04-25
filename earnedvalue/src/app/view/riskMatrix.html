@@ -1,4 +1,5 @@
-<div class="container" style="margin: 30px 0">
+<div class="container" style="margin: 5px 0">
+  <legend>{{nombre}}</legend>
   <div class="panel panel-default">
     <div class="panel-heading">Agregar riesgo</div>
     <div class="row">
@@ -35,7 +36,7 @@
 </div>
 
 <div class="table-responsive">
-<table style="margin-top: 5px" class="table table-hover" [hidden]="!riesgos.length > 0">
+<table style="margin: 10px" class="table table-hover" [hidden]="!riesgos.length > 0">
   <thead>
     <tr>
       <th class="col-md-6">Riesgo</th>
@@ -66,15 +67,15 @@
 
         <div class="form-group col-md-4">
           <label for="idVerde" class="form-label">Verde</label>
-          <input id="idVerde" type="text" class="form-control" placeholder="0.01 - {{rangoVerde | number : '1.2-2'}}" [ngModel]="rangoVerde">
+          <input id="idVerde" type="text" class="form-control" placeholder="0.01 - {{ rangoVerde }}" [ngModel]="rangoVerde" (ngModelChange)="onChangeVerde($event)">
         </div>
         <div class="form-group col-md-4">
           <label for="idAmarillo" class="form-label">Amarillo</label>
-          <input id="idAmarillo" type="text" class="form-control" placeholder="{{ rangoVerde++0.01 }} - {{rangoAmarillo | number : '1.2-2'}}" [ngModel]="rangoAmarillo">
+          <input id="idAmarillo" type="text" class="form-control" value="{{ rangoAmarilloMin | number : '1.2-2'  }} - {{ rangoAmarilloMax | number : '1.2-2' }}" readonly>
         </div>
         <div class="form-group col-md-4">
           <label for="idRojo" class="form-label">Rojo</label>
-          <input id="idRojo" type="text" class="form-control" placeholder="{{rangoAmarillo++0.01 | number : '1.2-2'}} - 4.95" [ngModel]="rangoRojo">
+          <input id="idRojo" type="text" class="form-control" placeholder="{{ (rangoRojo + 0.01) }} - 4.95" [ngModel]="rangoRojo" (ngModelChange)="onChangeRojo($event)">
         </div>
 
         <p>Indicar los valores deseados para cada rango de colores:</p>
@@ -83,8 +84,7 @@
 
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-        <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="setearColores()">Guardar</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal">Guardar</button>
       </div>
     </div>
   </div>
