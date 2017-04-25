@@ -53,14 +53,14 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor= "let ev of earnedValue">
+      <tr class="active" *ngFor= "let ev of earnedValue">
         <td>{{ev.name}}</td>
         <td>{{ev.SV}}</td>
         <td>{{ev.CV}}</td>
         <td [ngClass]="isGreen(ev.SPI)? 'rangoVerde': isYellow(ev.SPI) ? 'rangoAmarillo' : 'rangoRojo'">{{ev.SPI | number : '1.2-2'}}</td>
         <td [ngClass]="isGreen(ev.CPI)? 'rangoVerde': isYellow(ev.CPI) ? 'rangoAmarillo' : 'rangoRojo'">{{ev.CPI | number : '1.2-2'}}</td>
       </tr>
-      <tr>
+      <tr class="active">
         <td>Total</td>
         <td>{{SV}}</td>
         <td>{{CV}}</td>
