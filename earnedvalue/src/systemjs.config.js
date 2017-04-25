@@ -14,6 +14,7 @@
       app: 'app',
 
       // angular bundles
+
       '@angular/core': 'npm:@angular/core/bundles/core.umd.js',
       '@angular/common': 'npm:@angular/common/bundles/common.umd.js',
       '@angular/compiler': 'npm:@angular/compiler/bundles/compiler.umd.js',
@@ -22,7 +23,7 @@
       '@angular/http': 'npm:@angular/http/bundles/http.umd.js',
       '@angular/router': 'npm:@angular/router/bundles/router.umd.js',
       '@angular/forms': 'npm:@angular/forms/bundles/forms.umd.js',
-
+      '@ng-bootstrap/ng-bootstrap' : 'npm:@ng-bootstrap/ng-bootstrap/bundles/ng-bootstrap.js',
       // other libraries
       'rxjs':                      'npm:rxjs',
       'angular-in-memory-web-api': 'npm:angular-in-memory-web-api/bundles/in-memory-web-api.umd.js'
@@ -34,7 +35,11 @@
       },
       rxjs: {
         defaultExtension: 'js'
-      }
+      },
+     '@ng-bootstrap/ng-bootstrap': { defaultExtension: 'js' },
+
+      'angular2-in-memory-web-api': { main: 'index.js', defaultExtension: 'js' },
+
     }
   });
 })(this);

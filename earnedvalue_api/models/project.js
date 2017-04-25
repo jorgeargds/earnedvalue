@@ -6,5 +6,5 @@ var Schema = mongoose.Schema;
 module.exports = mongoose.model('Project', new Schema({
     id: String,
     name: String,
-    description: String
+    cantSprints: String
 }));

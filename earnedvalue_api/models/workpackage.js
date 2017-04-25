@@ -8,11 +8,11 @@ module.exports = mongoose.model('WorkPackage', new Schema({
     name: String,
     idSprint: String,
     description: String,
-    totalHours: String,
+    hours: String,
     hourCost: String,
     extraCost: String,
-    actualTotalHours:String,
+    actualHours:String,
     actualHourCost: String,
-    actualextraCost: String
-  
+    actualExtraCost: String
+
 }));
