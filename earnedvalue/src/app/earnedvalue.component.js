@@ -11,6 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require('@angular/core');
 var core_2 = require('@angular/core');
 var http_1 = require('@angular/http');
+<<<<<<< HEAD
 var workPackage_1 = require('./interfaces/workPackage');
 require('rxjs/add/operator/toPromise');
 require('rxjs/add/operator/map');
@@ -124,6 +125,26 @@ var EarnedValueComponent = (function () {
         this.projectName = "";
         this.cantSprints = "";
     };
+=======
+require('rxjs/add/operator/toPromise');
+require('rxjs/add/operator/map');
+var EarnedValueComponent = (function () {
+    //   randomQuote = 'is this a randomQuote?';
+    function EarnedValueComponent(http) {
+        this.http = http;
+        this.baseUrl = 'http://localhost:8080';
+    }
+    //
+    EarnedValueComponent.prototype.saveProject = function () {
+        var _this = this;
+        var body = { project: { id: 1, name: 'Project' }, description: 'EarnedValue' };
+        this.http.post(this.baseUrl + "/saveProject", body, { headers: this.getHeaders() })
+            .map(function (res) { return res.json(); })
+            .subscribe(function (data) {
+            console.log(data);
+        }, function (err) { return _this.logError(err); });
+    };
+>>>>>>> 4dee12c8081be99bf3d5659e78a94eced1c83dd1
     EarnedValueComponent.prototype.getHeaders = function () {
         var headers = new http_1.Headers();
         headers.append('Accept', 'application/json');
@@ -132,6 +153,7 @@ var EarnedValueComponent = (function () {
     EarnedValueComponent.prototype.logError = function (err) {
         console.error('There was an error: ' + err);
     };
+<<<<<<< HEAD
     EarnedValueComponent.prototype.getSprint = function (sprint, action) {
         this.workPackage = new workPackage_1.WorkPackage("", "", "", "", "", "", "", "");
         this.isCreatePackage = true;
@@ -187,6 +209,10 @@ var EarnedValueComponent = (function () {
     EarnedValueComponent.prototype.ngOnDestroy = function () {
         this.ngUnsubscribe.next();
         this.ngUnsubscribe.complete();
+=======
+    EarnedValueComponent.prototype.btnGetResponse = function () {
+        console.log('gg');
+>>>>>>> 4dee12c8081be99bf3d5659e78a94eced1c83dd1
     };
     EarnedValueComponent = __decorate([
         core_1.Component({
@@ -194,7 +220,11 @@ var EarnedValueComponent = (function () {
             templateUrl: 'app/view/earnedvalue.html'
         }),
         core_2.Injectable(), 
+<<<<<<< HEAD
         __metadata('design:paramtypes', [http_1.Http, router_1.ActivatedRoute, router_1.Router])
+=======
+        __metadata('design:paramtypes', [http_1.Http])
+>>>>>>> 4dee12c8081be99bf3d5659e78a94eced1c83dd1
     ], EarnedValueComponent);
     return EarnedValueComponent;
 }());

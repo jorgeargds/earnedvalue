@@ -15,8 +15,20 @@ routes.post('/saveProject', (req, res) => {
   project.save(function(err) {
     if (err) throw err;
     res.status(200).json(project);
+
+  });
+
+  var matrix = new RiskMatrix({
+    id: req.body.project.name + '_Matrix',
+    idProject: req.body.project.name + '_ID'
+  })
+  matrix.save(function(err) {
+    if (err) throw err;
+    res.status(200).json(matrix);
   });
 });
+
+
 routes.get('/getAllProjects', (req ,res)=>{
    Project.find(function(err, projects) {
             if (err)
@@ -42,7 +54,6 @@ for (var sprint of req.body) {
   var sprint = new Sprint ({
     name: sprint.name,
     idProject: sprint.idProject,
-    position: sprint.position,
     id:(sprint.idProject).substring(0,sprint.idProject.length-3) + '_' + (sprint.id) +"_ID"
   });
   sprints.push(sprint);
@@ -55,14 +66,15 @@ res.status(200).json(sprints);
 
 routes.post('/getProjectSprints', (req ,res)=>{
 
-  var query = Sprint.find();
-  query.where('idProject', req.body.id);
+  var query = Sprint.find({});
+  query.where('idProject', req.body.id)
+
   query.exec(function (err, sprints) {
     if (err)
         res.send(err);
 
     res.json(sprints);
-});
+  });
 
 });
 
@@ -91,7 +103,6 @@ routes.post('/saveWorkPackage', (req, res) => {
 }else{
 
     WorkPackage.findOne({'id':req.body.id},function(err,workpackage){
-      console.log(req.body);
       workpackage.name= req.body.name;
       workpackage.description= req.body.description;
       workpackage.hours= req.body.hours;
@@ -123,8 +134,48 @@ routes.post('/getSprintWorkPackages', (req ,res)=>{
     if (err)
         res.send(err);
     res.json(workPackages);
+
   });
 });
 
+//RiskMatrix API
+routes.post('/getProjectMatrix', (req ,res)=>{
+
+  var query = RiskMatrix.find({});
+  query.where('idProject', req.body.idProject)
+  query.exec(function (err, riskMatrix) {
+    if (err)
+        res.send(err);
+    res.json(riskMatrix);
+  });
+});
+
+routes.post('/getMatrixRisks', (req ,res)=>{
+
+  var query = Risk.find({});
+  query.where('idMatrix', req.body.idMatrix)
+  query.exec(function (err, risks) {
+    if (err)
+        res.send(err);
+    res.json(risks);
+  });
+});
+
+routes.post('/saveRisk', (req, res) => {
+
+  var risk = new Risk ({
+    descripcion: req.body.descripcion,
+    probabilidad: req.body.probabilidad,
+    impacto: req.body.impacto,
+    valor: req.body.valor,
+    idMatrix: req.body.idMatrix
+  })
+  risk.save(function(err) {
+    if (err) throw err;
+    console.log('WorkPackage saved successfully');
+    res.status(200).json(risk);
+
+  });
+});
 
 module.exports = routes;
