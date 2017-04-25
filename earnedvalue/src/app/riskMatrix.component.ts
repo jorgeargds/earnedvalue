@@ -131,4 +131,10 @@ export class RiskMatrixComponent {
   logError(err: String) {
     console.error('There was an error: ' + err);
 	};
+
+  public setearColores(){
+    let temp = this.riesgos;
+    this.riesgos = [];
+    this.riesgos = temp;
+  }
 };

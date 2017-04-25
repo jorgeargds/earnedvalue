@@ -102,6 +102,11 @@ var RiskMatrixComponent = (function () {
         console.error('There was an error: ' + err);
     };
     ;
+    RiskMatrixComponent.prototype.setearColores = function () {
+        var temp = this.riesgos;
+        this.riesgos = [];
+        this.riesgos = temp;
+    };
     RiskMatrixComponent = __decorate([
         core_1.Component({
             selector: 'riskMatrix',
