@@ -99,6 +99,7 @@ var EarnedValueComponent = (function () {
     //Se hace separado ya que al ser un observable cold se suscribe dos veces
     EarnedValueComponent.prototype.saveWorkPackage = function () {
         var _this = this;
+        this.isCreate = false;
         var workPackage = {
             id: this.workPackage.id,
             idSprint: this.sprint.id,
@@ -114,7 +115,6 @@ var EarnedValueComponent = (function () {
             .map(function (res) { return res.json(); })
             .takeUntil(this.ngUnsubscribe)
             .subscribe(function (data) {
-            console.log(data);
             if (_this.sprint.workPackages == undefined)
                 _this.sprint.workPackages = [];
             if (_this.workPackage.id == undefined)
@@ -172,14 +172,37 @@ var EarnedValueComponent = (function () {
     };
     EarnedValueComponent.prototype.getValues = function (sprint) {
         var _this = this;
+        this.earnedValue = [];
+        var ev = {};
+        var acSprint = 0;
+        var pcSprint = 0;
+        var phSprint = 0;
+        var ahSprint = 0;
         this.initEarnedValueAttrs();
         sprint.forEach(function (sprint) {
+            acSprint = 0;
+            pcSprint = 0;
+            phSprint = 0;
+            ahSprint = 0;
+            ev = {};
             sprint.workPackages.forEach(function (wp) {
                 _this.AC += +wp.actualHours * +wp.actualHourCost + +wp.actualExtraCost;
                 _this.PC += +wp.hours * +wp.hourCost + +wp.extraCost;
                 _this.PH += +wp.hours;
                 _this.AH += +wp.actualHours;
+                acSprint += (+wp.actualHours * +wp.actualHourCost + +wp.actualExtraCost);
+                pcSprint += (+wp.hours * +wp.hourCost + +wp.extraCost);
+                phSprint += (+wp.hours);
+                ahSprint += (+wp.actualHours);
             });
+            ev = {
+                name: sprint.name,
+                SV: (phSprint - ahSprint),
+                CV: (pcSprint - acSprint),
+                SPI: (phSprint / ahSprint),
+                CPI: (pcSprint / acSprint),
+            };
+            _this.earnedValue.push(ev);
         });
         this.SV = this.PH - this.AH;
         this.CV = this.PC - this.AC;
@@ -209,7 +232,7 @@ var EarnedValueComponent = (function () {
         core_1.Component({
             selector: 'earnedvalue',
             templateUrl: 'app/view/earnedvalue.html',
-            styles: ["\n\t\t.rangoVerde{\n\t\t\tcolor: #008000;\n\t\t}\n\n\t\t.rangoAmarillo{\n\t\t\tcolor: #FFFF00;\n\t\t}\n\n\t\t.rangoRojo{\n\t\t\tcolor: #FF0000;\n\t\t}\n\n\t"]
+            styles: ["\n\t\t.rangoVerde{\n\t\t\tcolor: #008000;\n\t\t}\n\n\t\t.rangoAmarillo{\n\t\t\tcolor: #FFFF00;\n\t\t}\n\n\t\t.rangoRojo{\n\t\t\tcolor: #FF0000;\n\t\t}\n\n\t\t"]
         }),
         core_2.Injectable(), 
         __metadata('design:paramtypes', [http_1.Http, router_1.ActivatedRoute, router_1.Router])

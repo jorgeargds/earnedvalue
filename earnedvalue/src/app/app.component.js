@@ -19,7 +19,6 @@ var AppComponent = (function () {
         this.getProjects();
     }
     AppComponent.prototype.saveProjectId = function (id) {
-        console.log(id);
         localStorage.setItem('idProject', id);
     };
     AppComponent.prototype.getProjects = function () {

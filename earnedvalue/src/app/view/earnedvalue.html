@@ -35,7 +35,7 @@
   <button class="btn btn-info pull-right" data-toggle="modal" data-target="#earnedValueModal">Calcular Earned value</button>
 </div>
 <div [hidden]="isSprintSelected"class="row" style="margin-top:100px">
-  
+
   <h3>EV para el sprint seleccionado</h3>
   <p>Costo planeado:&#36; {{PC}}</p>
   <p>Costo actual:&#36; {{AC}}</p>
@@ -45,6 +45,7 @@
   <table class="table table-striped table-hover ">
     <thead>
       <tr>
+        <th>Sprint</th>
         <th>SV(Variación de calendario)</th>
         <th>CV(Variación de costo)</th>
         <th>SPI(Indice de rendimiento de calendario)</th>
@@ -52,11 +53,19 @@
       </tr>
     </thead>
     <tbody>
+      <tr *ngFor= "let ev of earnedValue">
+        <td>{{ev.name}}</td>
+        <td>{{ev.SV}}</td>
+        <td>{{ev.CV}}</td>
+        <td [ngClass]="isGreen(ev.SPI)? 'rangoVerde': isYellow(ev.SPI) ? 'rangoAmarillo' : 'rangoRojo'">{{ev.SPI | number : '1.2-2'}}</td>
+        <td [ngClass]="isGreen(ev.CPI)? 'rangoVerde': isYellow(ev.CPI) ? 'rangoAmarillo' : 'rangoRojo'">{{ev.CPI | number : '1.2-2'}}</td>
+      </tr>
       <tr>
+        <td>Total</td>
         <td>{{SV}}</td>
         <td>{{CV}}</td>
-        <td [ngClass]="isGreen(SPI)? 'rangoVerde': isYellow(SPI) ? 'rangoAmarillo' : 'rangoRojo'">{{SPI}}</td>
-        <td [ngClass]="isGreen(CPI)? 'rangoVerde': isYellow(CPI) ? 'rangoAmarillo' : 'rangoRojo'">{{CPI}}</td>
+        <td [ngClass]="isGreen(SPI)? 'rangoVerde': isYellow(SPI) ? 'rangoAmarillo' : 'rangoRojo'">{{SPI | number : '1.2-2'}}</td>
+        <td [ngClass]="isGreen(CPI)? 'rangoVerde': isYellow(CPI) ? 'rangoAmarillo' : 'rangoRojo'">{{CPI | number : '1.2-2'}}</td>
       </tr>
 
     </tbody>

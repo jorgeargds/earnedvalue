@@ -18,7 +18,7 @@ export class AppComponent {
   }
 
   saveProjectId(id:string){
-    console.log(id);
+    
     localStorage.setItem('idProject',id);
   }
 
